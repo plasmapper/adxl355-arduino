@@ -1,0 +1,3 @@
+breathe
+sphinx_substitution_extensions
+sphinx-rtd-theme

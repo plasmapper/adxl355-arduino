@@ -1,0 +1,5 @@
+INPUT = source/adxl355-arduino/common/component/include
+GENERATE_XML = YES
+GENERATE_HTML = NO
+GENERATE_LATEX = NO
+INLINE_INHERITED_MEMB = YES

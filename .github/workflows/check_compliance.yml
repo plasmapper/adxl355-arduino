@@ -1,0 +1,12 @@
+name: Check compliance
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: arduino/arduino-lint-action@v1
