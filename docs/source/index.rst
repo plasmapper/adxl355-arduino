@@ -1,6 +1,6 @@
 Analog Devices ADXL355 Accelerometer Library for Arduino
 ========================================================
-Tested on `Arduino Due<https://docs.arduino.cc/hardware/due>`_ and
+Tested on `Arduino Due <https://docs.arduino.cc/hardware/due>`_ and
 `EVAL-ADXL355-PMDZ <https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/EVAL-ADXL355-PMDZ.html>`_
 
 Examples
