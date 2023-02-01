@@ -282,11 +282,11 @@ public:
   ADXL355_Accelerations getOffsets();
 
   /// @brief Sets the raw X-, Y- and Z-axis acceleration offsets
-  /// @offsets raw acceleration offsets
+  /// @param rawOffsets raw acceleration offsets
   void setRawOffsets(ADXL355_RawAccelerations rawOffsets);
 
   /// @brief Sets the X-, Y- and Z-axis acceleration offsets
-  /// @offsets acceleration offsets, g
+  /// @param offsets acceleration offsets, g
   void setOffsets(ADXL355_Accelerations offsets);
 
   /// @brief Gets the axes for which activity detection is enabled
@@ -294,7 +294,7 @@ public:
   ADXL355_Axes getActivityDetectionAxes();
 
   /// @brief Enables and disables activity detection
-  /// @axes axes for which activity detection should be enabled 
+  /// @param axes axes for which activity detection should be enabled 
   void setActivityDetectionAxes(ADXL355_Axes axes);
 
   /// @brief Gets the raw activity detection threshold
@@ -306,11 +306,11 @@ public:
   float getActivityDetectionThreshold();
 
   /// @brief Sets the raw activity detection threshold
-  /// @threshold raw activity detection threshold (max: 524288)
+  /// @param rawThreshold raw activity detection threshold (max: 524288)
   void setRawActivityDetectionThreshold(uint32_t rawThreshold);
 
   /// @brief Sets the activity detection threshold
-  /// @threshold activity detection threshold, g
+  /// @param threshold activity detection threshold, g
   void setActivityDetectionThreshold(float threshold);
 
   /// @brief Gets the number of consecutive events above threshold required to detect activity
@@ -318,7 +318,7 @@ public:
   uint8_t getActivityDetectionCount();
 
   /// @brief Sets the number of consecutive events above threshold required to detect activity
-  /// @count activity count
+  /// @param count activity count
   void setActivityDetectionCount(uint8_t count);
 
   /// @brief Gets the high-pass filter frequency
@@ -326,7 +326,7 @@ public:
   ADXL355_HpfFrequency getHpfFrequency();
 
   /// @brief Sets the high-pass filter frequency
-  /// @frequency high-pass filter frequency
+  /// @param frequency high-pass filter frequency
   void setHpfFrequency(ADXL355_HpfFrequency frequency);
 
   /// @brief Gets the output data rate
@@ -334,7 +334,7 @@ public:
   ADXL355_OutputDataRate getOutputDataRate();
 
   /// @brief Sets the output data rate
-  /// @outputDataRate output data rate
+  /// @param outputDataRate output data rate
   void setOutputDataRate(ADXL355_OutputDataRate outputDataRate);
 
   /// @brief Gets the watermark number of samples stored in the FIFO that triggers a FIFO_FULL condition
@@ -342,7 +342,7 @@ public:
   uint8_t getFifoWatermark();
 
   /// @brief Sets the watermark number of samples stored in the FIFO that triggers a FIFO_FULL condition
-  /// @watermark output data rate
+  /// @param watermark output data rate
   void setFifoWatermark(uint8_t watermark);
 
   /// @brief Gets the interrupts
@@ -350,7 +350,7 @@ public:
   ADXL355_Interrupts getInterrupts();
  
   /// @brief Sets the interrupts
-  /// @return interrupts
+  /// @param interrupts interrupts
   void setInterrupts(ADXL355_Interrupts interrupts);
 
   /// @brief Gets the synchronization mode
@@ -358,7 +358,7 @@ public:
   ADXL355_Synchronization getSynchronization();
  
   /// @brief Sets the synchronization mode
-  /// @return synchronization mode
+  /// @param synchronization synchronization mode
   void setSynchronization(ADXL355_Synchronization synchronization);
 
   /// @brief Enables the external clock
@@ -380,7 +380,7 @@ public:
   float getAccelerationScaleFactor();
 
   /// @brief Sets the acceleration range
-  /// @range acceleration range
+  /// @param range acceleration range
   void setRange(ADXL355_Range range);
 
   /// @brief Gets the interrupt polarity
@@ -388,7 +388,7 @@ public:
   ADXL355_InterruptPolarity getInterruptPolarity();
  
   /// @brief Sets the interrupt polarity
-  /// @return interrupt polarity
+  /// @param polarity interrupt polarity
   void setInterruptPolarity(ADXL355_InterruptPolarity polarity);
 
   /// @brief Gets the I2C speed
@@ -396,7 +396,7 @@ public:
   ADXL355_I2CSpeed getI2CSpeed();
  
   /// @brief Sets the I2C speed
-  /// @return I2C speed
+  /// @param speed I2C speed
   void setI2CSpeed(ADXL355_I2CSpeed speed);
 
   /// @brief Switches mode to measurement mode
