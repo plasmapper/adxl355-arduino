@@ -1,4 +1,4 @@
-name: Check compliance
+name: Check Arduino
 on:
   push:
     branches:
