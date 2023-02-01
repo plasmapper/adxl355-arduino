@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.2
-        with:
-          path: docs/source/adxl355-arduino
      
       - name: Doxygen
         uses: mattnotmitt/doxygen-action@v1.1.0
