@@ -1,65 +1,77 @@
 Analog Devices ADXL355 Accelerometer Library for Arduino
 ========================================================
+Tested on `Arduino Due<https://docs.arduino.cc/hardware/due>`_ and
+`EVAL-ADXL355-PMDZ <https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/EVAL-ADXL355-PMDZ.html>`_
 
-Usage
------
-Use :cpp:func:`PL::ADXL355::ADXL355` to create an instance of ADXL355 and
-:cpp:func:`PL::ADXL355::begin` to initialize it.
+Examples
+--------
+| `Device information and self test <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/DeviceInfoAndSelfTest>`_
+| `Acceleration measurement <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/AccelerationMeasurement>`_
+| `Acceleration waveform measurement <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/AccelerationWaveformMeasurement>`_
+| `Activity detection <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/ActivityDetection>`_
 
-Use :cpp:func:`PL::ADXL355::getRange` and :cpp:func:`PL::ADXL355::setRange`
-to configure the measurement range and :cpp:func:`PL::ADXL355::getAccelerationScaleFactor`
-to get the acceleration scale factor in g/LSB.
+Functions
+---------
 
-Use :cpp:func:`PL::ADXL355::getOutputDataRate` and :cpp:func:`PL::ADXL355::setOutputDataRate`
-to configure the measurement frequency.
+Initialization
+^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::ADXL355`, :cpp:func:`PL::ADXL355::begin`.
 
-Use :cpp:func:`PL::ADXL355::enableMeasurement` to enable the acceleration measurement,
-:cpp:func:`PL::ADXL355::disableMeasurement` to disable the acceleration measurement and
-:cpp:func:`PL::ADXL355::isMeasurementEnabled` to check if the acceleration measurement is enabled.
+Range Configuration and Scale Factor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getRange`, :cpp:func:`PL::ADXL355::setRange`, :cpp:func:`PL::ADXL355::getAccelerationScaleFactor`.
 
-Use :cpp:func:`PL::ADXL355::getAccelerations`/:cpp:func:`PL::ADXL355::getRawAccelerations`
-to measure the instantaneous acceleration values.
+Measurement Frequency Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getOutputDataRate`, :cpp:func:`PL::ADXL355::setOutputDataRate`.
 
-Use :cpp:func:`PL::ADXL355::getNumberOfFifoSamples`, :cpp:func:`PL::ADXL355::clearFifo` and
-:cpp:func:`PL::ADXL355::getAccelerationsFromFifo`/:cpp:func:`PL::ADXL355::getRawAccelerationsFromFifo`
-to get the acceleration waveforms.
+Measurement Enable/Disable
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Use :cpp:func:`PL::ADXL355::enableMeasurement`, :cpp:func:`PL::ADXL355::disableMeasurement`,
+:cpp:func:`PL::ADXL355::isMeasurementEnabled`.
 
-Use :cpp:func:`PL::ADXL355::getOffsets`/:cpp:func:`PL::ADXL355::getRawOffsets` and
-:cpp:func:`PL::ADXL355::setOffsets`/:cpp:func:`PL::ADXL355::setRawOffsets`
-to configure the acceleration offsets.
+Single Measurement
+^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getAccelerations`/:cpp:func:`PL::ADXL355::getRawAccelerations`.
 
-Use :cpp:func:`PL::ADXL355::getHpfFrequency` and :cpp:func:`PL::ADXL355::setHpfFrequency`
-to configure the high-pass filter.
+Waveform Measurement
+^^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getNumberOfFifoSamples`, :cpp:func:`PL::ADXL355::clearFifo`,
+:cpp:func:`PL::ADXL355::getAccelerationsFromFifo`/:cpp:func:`PL::ADXL355::getRawAccelerationsFromFifo`.
 
-Use :cpp:func:`PL::ADXL355::getActivityDetectionAxes`, :cpp:func:`PL::ADXL355::setActivityDetectionAxes`,
+Offset Configuration
+^^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getOffsets`/:cpp:func:`PL::ADXL355::getRawOffsets`,
+:cpp:func:`PL::ADXL355::setOffsets`/:cpp:func:`PL::ADXL355::setRawOffsets`.
+
+Activity Detection
+^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getActivityDetectionAxes`, :cpp:func:`PL::ADXL355::setActivityDetectionAxes`,
 :cpp:func:`PL::ADXL355::getActivityDetectionThreshold`/:cpp:func:`PL::ADXL355::getRawActivityDetectionThreshold`,
 :cpp:func:`PL::ADXL355::setActivityDetectionThreshold`/:cpp:func:`PL::ADXL355::setRawActivityDetectionThreshold`,
-:cpp:func:`PL::ADXL355::getActivityDetectionCount` and :cpp:func:`PL::ADXL355::setActivityDetectionCount`
-to configure the acceleration activity detection.
+:cpp:func:`PL::ADXL355::getActivityDetectionCount`, :cpp:func:`PL::ADXL355::setActivityDetectionCount`.
 
-Use :cpp:func:`PL::ADXL355::enableTemperature` to enable the temperature measurement,
-:cpp:func:`PL::ADXL355::disableTemperature` to disable the temperature measurement and
-:cpp:func:`PL::ADXL355::isTemperatureEnabled` to check if the temperature measurement is enabled.
+Temperature Measurement
+^^^^^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::enableTemperature`, :cpp:func:`PL::ADXL355::disableTemperature`,
+:cpp:func:`PL::ADXL355::isTemperatureEnabled`,
+:cpp:func:`PL::ADXL355::getTemperature`/:cpp:func:`PL::ADXL355::getRawTemperature`.
 
-Use :cpp:func:`PL::ADXL355::getTemperature`/:cpp:func:`PL::ADXL355::getRawTemperature`
-to measure temperature.
+Interrupt Configuration
+^^^^^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getInterrupts`, :cpp:func:`PL::ADXL355::setInterrupts`.
 
-Use :cpp:func:`PL::ADXL355::getInterrupts` and :cpp:func:`PL::ADXL355::setInterrupts`
-to configure the interrupts.
+Device Information and Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::getDeviceInfo`, :cpp:func:`PL::ADXL355::getStatus`.
 
-Use :cpp:func:`PL::ADXL355::getStatus`
-to get the device status.
+Self-test and Reset
+^^^^^^^^^^^^^^^^^^^
+:cpp:func:`PL::ADXL355::selfTest`, :cpp:func:`PL::ADXL355::reset`.
 
-Use :cpp:func:`PL::ADXL355::selfTest`
-to perform the self-test of the device.
-
-Use :cpp:func:`PL::ADXL355::getDeviceInfo`
-to get the device information.
-
-Use :cpp:func:`PL::ADXL355::reset`
-to reset the device.
-
-Other functions:
+Other
+^^^^^
+:cpp:func:`PL::ADXL355::getHpfFrequency`, :cpp:func:`PL::ADXL355::setHpfFrequency`,
 :cpp:func:`PL::ADXL355::getFifoWatermark`, :cpp:func:`PL::ADXL355::setFifoWatermark`,
 :cpp:func:`PL::ADXL355::getSynchronization`, :cpp:func:`PL::ADXL355::setSynchronization`,
 :cpp:func:`PL::ADXL355::enableExternalClock`, :cpp:func:`PL::ADXL355::disableExternalClock`,
@@ -69,15 +81,6 @@ Other functions:
 :cpp:func:`PL::ADXL355::enableDataReady`, :cpp:func:`PL::ADXL355::disableDataReady`,
 :cpp:func:`PL::ADXL355::isDataReadyEnabled`.
 
-Refer to the `ADXL355 <https://www.analog.com/en/products/adxl355.html>`_ datasheet for the details
-on the device usage and configuration.
-
-Examples
---------
-| `Device information and self test <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/DeviceInfoAndSelfTest>`_
-| `Acceleration measurement <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/AccelerationMeasurement>`_
-| `Acceleration waveform measurement <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/AccelerationWaveformMeasurement>`_
-| `Activity detection <https://github.com/plasmapper/adxl355-arduino/tree/main/examples/ActivityDetection>`_
 
 API reference
 -------------
