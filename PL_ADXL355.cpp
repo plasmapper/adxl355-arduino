@@ -432,7 +432,7 @@ ADXL355_Synchronization ADXL355::getSynchronization() {
 //==============================================================================
 
 void ADXL355::setSynchronization(ADXL355_Synchronization synchronization) {
-  uint8_t syncRegister = read(ADXL355_REG_FILTER) & ~ADXL355_REG_SYNC_SYNC_MAP;
+  uint8_t syncRegister = read(ADXL355_REG_SYNC) & ~ADXL355_REG_SYNC_SYNC_MAP;
   write(ADXL355_REG_SYNC, syncRegister | (uint8_t)synchronization);
 }
 
