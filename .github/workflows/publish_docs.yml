@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v4
      
       - name: Doxygen
-        uses: mattnotmitt/doxygen-action@v1.1.0
+        uses: mattnotmitt/doxygen-action@v1.9.8
         with:
           working-directory: docs
       
@@ -23,7 +23,7 @@ jobs:
           build-command: sphinx-build source build
 
       - name: Upload
-        uses: actions/upload-pages-artifact@v1.0.4
+        uses: actions/upload-pages-artifact@v2
         with:
           path: docs/build
 
