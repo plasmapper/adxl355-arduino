@@ -15,7 +15,7 @@ Functions
 
 Initialization
 ^^^^^^^^^^^^^^
-:cpp:func:`PL::ADXL355::ADXL355`, :cpp:func:`PL::ADXL355::begin`.
+:cpp:func:`PL::ADXL355::ADXL355`, :cpp:func:`PL::ADXL355::beginSPI`, :cpp:func:`PL::ADXL355::beginI2C`.
 
 Range Configuration and Scale Factor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
