@@ -3,10 +3,23 @@
 
 #include <Arduino.h>
 #include <SPI.h>
+#include <Wire.h>
 
 //==============================================================================
 
 namespace PL {
+
+//==============================================================================
+
+/// @brief Device iterface
+enum class ADXL355_Interface {
+  /// @brief unknown
+  unknown,
+  /// @brief SPI
+  spi,
+  /// @brief I2C
+  i2c
+};
 
 //==============================================================================
 
@@ -152,7 +165,7 @@ enum class ADXL355_InterruptPolarity : uint8_t {
 
 //==============================================================================
 
-/// @brief Acceleration range
+/// @brief I2C speed
 enum class ADXL355_I2CSpeed : uint8_t {
   /// @brief fast
   fast = 0x00,
@@ -211,6 +224,8 @@ class ADXL355 {
 public:
   /// @brief Default SPI frequency
   static constexpr uint32_t defaultSpiFrequency = 10000000;
+  /// @brief Default I2C frequency
+  static constexpr uint32_t defaultI2cFrequency = 400000;
   /// @brief Temperature intercept, LSB
   static constexpr uint16_t temperatureInterceptLsb = 1885;
   /// @brief Temperature intercept, °C
@@ -227,11 +242,26 @@ public:
   static constexpr uint8_t maxNumberOfFifoSamples = 96;
 
   /// @brief Constructor
+  ADXL355();
+
+  /// @brief SPI constructor
   /// @param csPin SPI chip select pin
   /// @param frequency SPI frequency, Hz
+  __attribute__((deprecated("Use parameterless constructor instead and select the interface by using beginSPI or beginI2C.")))
   ADXL355(uint8_t csPin, uint32_t frequency = defaultSpiFrequency);
-  
+
   /// @brief Initializes the SPI bus and the CS pin
+  /// @param csPin SPI chip select pin
+  /// @param frequency SPI frequency, Hz
+  void beginSPI(uint8_t csPin, uint32_t frequency = defaultSpiFrequency);
+
+  /// @brief Initializes the I2C bus
+  /// @param address I2C target address (0x1D if ASEL = 0 or 0x53 if ASEL = 1)
+  /// @param frequency I2C frequency, Hz
+  void beginI2C(uint8_t address, uint32_t frequency = defaultI2cFrequency);
+
+  /// @brief Initializes the SPI bus and the CS pin
+  __attribute__((deprecated("Use beginSPI or beginI2C instead.")))
   void begin();
 
   /// @brief Gets the device information
@@ -437,8 +467,13 @@ public:
   void reset();
 
 private:
-  SPISettings spiSettings;
+  ADXL355_Interface interface = ADXL355_Interface::unknown;
+  uint32_t spiFrequency;
   uint8_t csPin;
+  uint8_t i2cAddress;
+  uint32_t i2cFrequency;
+
+  SPISettings spiSettings;
 
   uint8_t read(uint8_t address);
   void read(uint8_t address, void* dest, size_t numberOfRegisters);

@@ -128,11 +128,21 @@ ADXL355_Accelerations::ADXL355_Accelerations(float x, float y, float z) : x(x), 
 
 //==============================================================================
 
-ADXL355::ADXL355 (uint8_t csPin, uint32_t frequency) : spiSettings (frequency, MSBFIRST, SPI_MODE0), csPin (csPin) {}
+ADXL355::ADXL355() {}
 
 //==============================================================================
 
-void ADXL355::begin() {
+ADXL355::ADXL355(uint8_t csPin, uint32_t frequency) : interface(ADXL355_Interface::spi), spiFrequency(frequency), csPin(csPin) {}
+
+//==============================================================================
+
+void ADXL355::beginSPI(uint8_t csPin, uint32_t frequency) {
+  interface = ADXL355_Interface::spi;
+  spiFrequency = frequency;
+  this->csPin = csPin;
+
+  spiSettings = SPISettings(spiFrequency, MSBFIRST, SPI_MODE0);
+
   SPI.begin();
   pinMode(csPin, OUTPUT);
   digitalWrite(csPin, HIGH);
@@ -140,9 +150,25 @@ void ADXL355::begin() {
 
 //==============================================================================
 
+void ADXL355::beginI2C(uint8_t address, uint32_t frequency) {
+  interface = ADXL355_Interface::i2c;
+  i2cAddress = address;
+  i2cFrequency = frequency;
+
+  Wire.begin();
+}
+
+//==============================================================================
+
+void ADXL355::begin() {
+  beginSPI(csPin, spiFrequency);
+}
+
+//==============================================================================
+
 ADXL355_DeviceInfo ADXL355::getDeviceInfo() {
   uint8_t data[4];
-  read (ADXL355_REG_DEVID_AD, &data, sizeof(data));
+  read(ADXL355_REG_DEVID_AD, &data, sizeof(data));
   ADXL355_DeviceInfo deviceInfo;
   deviceInfo.vendorId = data[0];
   deviceInfo.familyId = data[1];
@@ -227,10 +253,10 @@ void ADXL355::clearFifo() {
 ADXL355_RawAccelerations ADXL355::getRawAccelerationsFromFifo() {
   uint8_t data[3];
   ADXL355_RawAccelerations rawAccelerations(0, 0, 0);
-  
+
   do {
     read(ADXL355_REG_FIFO_DATA, &data, sizeof(data));
-  } while (!(data[2] & 0x01));
+  } while (!(data[2] & 0x03));
   
   if (data[2] & 0x02)
     return rawAccelerations;
@@ -238,7 +264,7 @@ ADXL355_RawAccelerations ADXL355::getRawAccelerationsFromFifo() {
   ((uint8_t*)&rawAccelerations.x)[1] = data[2];
   ((uint8_t*)&rawAccelerations.x)[2] = data[1];
   ((uint8_t*)&rawAccelerations.x)[3] = data[0];
-  
+
   while(read(ADXL355_REG_FIFO_ENTRIES) < 2);
   
   read(ADXL355_REG_FIFO_DATA, &data, sizeof(data));
@@ -312,7 +338,7 @@ void ADXL355::setRawOffsets(ADXL355_RawAccelerations rawOffsets) {
 
 void ADXL355::setOffsets(ADXL355_Accelerations offsets) {
   float scaleFactor = getAccelerationScaleFactor();
-  setRawOffsets (ADXL355_RawAccelerations(offsets.x / scaleFactor, offsets.y / scaleFactor, offsets.z / scaleFactor));
+  setRawOffsets(ADXL355_RawAccelerations(offsets.x / scaleFactor, offsets.y / scaleFactor, offsets.z / scaleFactor));
 }
 
 //==============================================================================
@@ -605,12 +631,26 @@ void ADXL355::read(uint8_t address, void* dest, size_t numberOfRegisters) {
   if (!dest)
     return;
 
-  SPI.beginTransaction(spiSettings);
-  digitalWrite(csPin, LOW);
-  SPI.transfer((address << 1) | 1);
-  SPI.transfer(dest, numberOfRegisters);
-  digitalWrite(csPin, HIGH);
-  SPI.endTransaction();
+  memset(dest, 0, numberOfRegisters);
+
+  if (interface == ADXL355_Interface::spi) {
+    SPI.beginTransaction(spiSettings);
+    digitalWrite(csPin, LOW);
+    SPI.transfer((address << 1) | 1);
+    SPI.transfer(dest, numberOfRegisters);
+    digitalWrite(csPin, HIGH);
+    SPI.endTransaction();
+  }
+
+  if (interface == ADXL355_Interface::i2c) {
+    Wire.setClock(i2cFrequency);
+    Wire.beginTransmission(i2cAddress);
+    Wire.write(address);
+    Wire.endTransmission(); 
+    Wire.requestFrom(i2cAddress, numberOfRegisters);
+    for (size_t i = 0; i < numberOfRegisters && Wire.available(); i++)
+      ((uint8_t*)dest)[i] = Wire.read();
+  }
 }
 
 //==============================================================================
@@ -625,12 +665,22 @@ void ADXL355::write(uint8_t address, void* src, size_t numberOfRegisters) {
   if (!src)
     return;
 
-  SPI.beginTransaction(spiSettings);
-  digitalWrite(csPin, LOW);
-  SPI.transfer(address << 1);
-  SPI.transfer(src, numberOfRegisters);
-  digitalWrite(csPin, HIGH);
-  SPI.endTransaction(); 
+  if (interface == ADXL355_Interface::spi) {
+    SPI.beginTransaction(spiSettings);
+    digitalWrite(csPin, LOW);
+    SPI.transfer(address << 1);
+    SPI.transfer(src, numberOfRegisters);
+    digitalWrite(csPin, HIGH);
+    SPI.endTransaction(); 
+  }
+
+  if (interface == ADXL355_Interface::i2c) {
+    Wire.setClock(i2cFrequency);
+    Wire.beginTransmission(i2cAddress);
+    Wire.write(address);
+    Wire.write((uint8_t*)src, numberOfRegisters);
+    Wire.endTransmission();
+  }
 }
 
 //==============================================================================

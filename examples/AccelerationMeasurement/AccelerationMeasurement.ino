@@ -2,10 +2,17 @@
 
 //==============================================================================
 
-// Create an instance of ADXL355
-// ADXL355 MOSI, MISO and SCLK pins should be connected to the correspondent
-// Arduino pins and ADXL355 CS pin should be connected to pin 2
-PL::ADXL355 adxl355(2);
+// Pin connections for using SPI or I2C interface
+// ADXL355 pin    Arduino pin
+//                SPI     I2C
+// CS/SCL          2      SCL
+// MOSI/SDA       MOSI    SDA
+// MISO/ASEL      MISO    GND
+// SCLK/Vssio     SCLK    GND
+
+PL::ADXL355 adxl355;
+uint8_t spiCsPin = 2;
+uint8_t i2cAddress = 0x1D;
 
 // ADXL355 range: +/- 2 g
 auto range = PL::ADXL355_Range::range2g;
@@ -13,8 +20,10 @@ auto range = PL::ADXL355_Range::range2g;
 //==============================================================================
 
 void setup() {
-  // Initialize ADXL355
-  adxl355.begin();
+  // Initialize ADXL355 (uncomment one of the following 2 lines to use either SPI or I2C)
+  adxl355.beginSPI(spiCsPin);
+  //adxl355.beginI2C(i2cAddress);
+
   // Set ADXL355 range
   adxl355.setRange(range);
   // Enable ADXL355 measurement

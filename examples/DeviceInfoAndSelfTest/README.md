@@ -1,6 +1,12 @@
 # Device Information and Self-Test Example
 
-ADXL355 MOSI, MISO and SCLK pins should be connected to the correspondent Arduino pins and ADXL355 CS pin should be connected to pin 2.
+Pin connections for using SPI or I2C interface
+|ADXL355 pin|Arduino pin (SPI)|Arduino pin (I2C)|
+|---|---|---|
+|CS/SCL|2|SCL|
+|MOSI/SDA|MOSI|SDA|
+|MISO/ASEL|MISO|GND|
+|SCLK/Vssio|SCLK|GND|
 
 1. ADXL355 is initialized.
 2. Serial is initialized at 115200 kbps.
