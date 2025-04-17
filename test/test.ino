@@ -46,6 +46,7 @@ test(deviceId) {
 
 test(getNumberOfFifoSamples) {
   adxl355.reset();
+  delay(1000);
   adxl355.setOutputDataRate(PL::ADXL355_OutputDataRate::odr4000);
   adxl355.enableMeasurement();
   delay(50);
@@ -224,11 +225,18 @@ test(power) {
 //==============================================================================
 
 test(reset) {
+  uint64_t shadowRegistersBeforeReset = adxl355.getShadowRegisters();
   adxl355.reset();
+  delay(1000);
+  uint64_t shadowRegistersAfterReset = adxl355.getShadowRegisters();
+  assertEqual(((uint32_t*)&shadowRegistersBeforeReset)[0], ((uint32_t*)&shadowRegistersAfterReset)[0]);
+  assertEqual(((uint32_t*)&shadowRegistersBeforeReset)[1], ((uint32_t*)&shadowRegistersAfterReset)[1]);
+
   adxl355.setOutputDataRate(PL::ADXL355_OutputDataRate::odr4000);
   adxl355.enableMeasurement();
   delay(50);
   assertEqual(adxl355.getNumberOfFifoSamples(), PL::ADXL355::maxNumberOfFifoSamples);
   adxl355.reset();
+  delay(1000);
   assertEqual(adxl355.getNumberOfFifoSamples(), 0);
 }

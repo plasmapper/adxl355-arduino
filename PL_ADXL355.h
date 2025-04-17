@@ -466,6 +466,10 @@ public:
   /// @brief Resets the device
   void reset();
 
+  /// @brief Gets the shadow registers (0x50...0x54)
+  /// @return Shadow registers value as a 64 bit integer (0x50 register value is the least significant byte)
+  uint64_t getShadowRegisters();
+
 private:
   ADXL355_Interface interface = ADXL355_Interface::unknown;
   uint32_t spiFrequency;

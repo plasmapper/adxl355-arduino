@@ -619,6 +619,14 @@ void ADXL355::reset() {
 
 //==============================================================================
 
+uint64_t ADXL355::getShadowRegisters() {
+  uint64_t data = 0;
+  read(0x50, &data, 5);
+  return data;
+}
+
+//==============================================================================
+
 uint8_t ADXL355::read(uint8_t address) {
   uint8_t data;
   read(address, &data, 1);

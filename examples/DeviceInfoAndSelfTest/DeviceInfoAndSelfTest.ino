@@ -28,6 +28,7 @@ void setup() {
 
   // Reset the ADXL355
   adxl355.reset();
+  delay(1000);
 
   // Read and print the device info
   auto deviceInfo = adxl355.getDeviceInfo();
