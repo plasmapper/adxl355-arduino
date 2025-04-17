@@ -23,7 +23,7 @@ jobs:
           build-command: sphinx-build source build
 
       - name: Upload
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: docs/build
 
@@ -39,4 +39,4 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
