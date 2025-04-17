@@ -67,7 +67,7 @@ Device Information and Status
 
 Self-test and Reset
 ^^^^^^^^^^^^^^^^^^^
-:cpp:func:`PL::ADXL355::selfTest`, :cpp:func:`PL::ADXL355::reset`.
+:cpp:func:`PL::ADXL355::selfTest`, :cpp:func:`PL::ADXL355::reset`, :cpp:func:`PL::ADXL355::getShadowRegisters`.
 
 Other
 ^^^^^
