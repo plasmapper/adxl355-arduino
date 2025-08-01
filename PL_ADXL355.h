@@ -250,10 +250,21 @@ public:
   __attribute__((deprecated("Use parameterless constructor instead and select the interface by using beginSPI or beginI2C.")))
   ADXL355(uint8_t csPin, uint32_t frequency = defaultSpiFrequency);
 
-  /// @brief Initializes the SPI bus and the CS pin
+  /// @brief Initializes the default Arduino SPI bus and the CS pin
   /// @param csPin SPI chip select pin
   /// @param frequency SPI frequency, Hz
   void beginSPI(uint8_t csPin, uint32_t frequency = defaultSpiFrequency);
+
+  /// @brief Initializes the internal SPI context with the provided parameters.
+  /// @param csPin SPI chip select pin
+  /// @param frequency SPI frequency, Hz
+  /// @param spiBus SPI bus to use.
+  /// @warning  The whole point of this method is to allow users to use their own SPI interface
+  ///           to communicate with the ADXL355 accelerometer. The responsibility of calling
+  ///           the `begin` method of the provided SPI interface therefore falls on the user of this method.
+  /// @warning  Since the SPI interface is provided (and stored) as a reference,
+  ///           *it must never go out of scope before this object!!*
+  void beginSPI(SPIClass& spiBus, uint8_t csPin, uint32_t frequency = defaultSpiFrequency);
 
   /// @brief Initializes the I2C bus
   /// @param address I2C target address (0x1D if ASEL = 0 or 0x53 if ASEL = 1)
@@ -472,12 +483,19 @@ public:
 
 private:
   ADXL355_Interface interface = ADXL355_Interface::unknown;
-  uint32_t spiFrequency;
-  uint8_t csPin;
+
+  // I²C Context
   uint8_t i2cAddress;
   uint32_t i2cFrequency;
 
+  // SPI Context
+  uint32_t spiFrequency;  // LEGACY From SPI-bound constructor.
+  uint8_t csPin;
   SPISettings spiSettings;
+
+  // Reference to an existing SPI bus. Defaults to the Arduino global bus
+  // to avoid juggling with `optional` shenanigans, or breaking the existing interface.
+  SPIClass& spiBus = SPI;
 
   uint8_t read(uint8_t address);
   void read(uint8_t address, void* dest, size_t numberOfRegisters);
