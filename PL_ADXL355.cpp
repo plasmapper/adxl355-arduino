@@ -136,15 +136,16 @@ ADXL355::ADXL355(uint8_t csPin, uint32_t frequency) : interface(ADXL355_Interfac
 
 //==============================================================================
 
-void ADXL355::beginSPI(uint8_t csPin, uint32_t frequency, SPIClass spi) {
+void ADXL355::beginSPI(uint8_t csPin, uint32_t frequency, std::shared_ptr<SPIClass> customSPI) {
   interface = ADXL355_Interface::spi;
-  this->spi = spi;
+  this->customSPI = customSPI;
+  this->spi = customSPI ? customSPI.get() : &SPI;
   this->csPin = csPin;
   spiFrequency = frequency;
 
   spiSettings = SPISettings(spiFrequency, MSBFIRST, SPI_MODE0);
 
-  spi.begin();
+  spi->begin();
   pinMode(csPin, OUTPUT);
   digitalWrite(csPin, HIGH);
 }
@@ -643,12 +644,12 @@ void ADXL355::read(uint8_t address, void* dest, size_t numberOfRegisters) {
   memset(dest, 0, numberOfRegisters);
 
   if (interface == ADXL355_Interface::spi) {
-    spi.beginTransaction(spiSettings);
+    spi->beginTransaction(spiSettings);
     digitalWrite(csPin, LOW);
-    spi.transfer((address << 1) | 1);
-    spi.transfer(dest, numberOfRegisters);
+    spi->transfer((address << 1) | 1);
+    spi->transfer(dest, numberOfRegisters);
     digitalWrite(csPin, HIGH);
-    spi.endTransaction();
+    spi->endTransaction();
   }
 
   if (interface == ADXL355_Interface::i2c) {
@@ -675,12 +676,12 @@ void ADXL355::write(uint8_t address, void* src, size_t numberOfRegisters) {
     return;
 
   if (interface == ADXL355_Interface::spi) {
-    spi.beginTransaction(spiSettings);
+    spi->beginTransaction(spiSettings);
     digitalWrite(csPin, LOW);
-    spi.transfer(address << 1);
-    spi.transfer(src, numberOfRegisters);
+    spi->transfer(address << 1);
+    spi->transfer(src, numberOfRegisters);
     digitalWrite(csPin, HIGH);
-    spi.endTransaction(); 
+    spi->endTransaction(); 
   }
 
   if (interface == ADXL355_Interface::i2c) {

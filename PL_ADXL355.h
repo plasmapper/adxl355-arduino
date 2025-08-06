@@ -2,6 +2,7 @@
 #define PL_ADXL355_H
 
 #include <Arduino.h>
+#include <memory>
 #include <SPI.h>
 #include <Wire.h>
 
@@ -253,8 +254,8 @@ public:
   /// @brief Initializes the SPI bus and the CS pin
   /// @param csPin SPI chip select pin
   /// @param frequency SPI frequency, Hz
-  /// @param spi SPI bus
-  void beginSPI(uint8_t csPin, uint32_t frequency = defaultSpiFrequency, SPIClass spi = SPI);
+  /// @param customSPI Custom SPI bus
+  void beginSPI(uint8_t csPin, uint32_t frequency = defaultSpiFrequency, std::shared_ptr<SPIClass> customSPI = NULL);
 
   /// @brief Initializes the I2C bus
   /// @param address I2C target address (0x1D if ASEL = 0 or 0x53 if ASEL = 1)
@@ -474,7 +475,8 @@ public:
 private:
   ADXL355_Interface interface = ADXL355_Interface::unknown;
 
-  SPIClass spi = SPI;
+  std::shared_ptr<SPIClass> customSPI = NULL;
+  SPIClass* spi = &SPI;
   uint8_t csPin;
   uint32_t spiFrequency;
   SPISettings spiSettings;
