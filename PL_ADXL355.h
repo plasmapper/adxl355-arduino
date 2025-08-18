@@ -254,7 +254,7 @@ public:
   /// @brief Initializes the SPI bus and the CS pin
   /// @param csPin SPI chip select pin
   /// @param frequency SPI frequency, Hz
-  /// @param customSPI Custom SPI bus
+  /// @param customSPI Custom SPI bus (std::shared_ptr<SPIClass> can be created using std::make_shared<SPIClass>(...SPIClass constructor arguments...) )
   void beginSPI(uint8_t csPin, uint32_t frequency = defaultSpiFrequency, std::shared_ptr<SPIClass> customSPI = NULL);
 
   /// @brief Initializes the I2C bus
@@ -475,8 +475,8 @@ public:
 private:
   ADXL355_Interface interface = ADXL355_Interface::unknown;
 
-  std::shared_ptr<SPIClass> customSPI = NULL;
-  SPIClass* spi = &SPI;
+  std::shared_ptr<SPIClass> customSPI = NULL; // Custom SPI bus shared pointer (stored to guarantee custom SPI bus object lifetime)
+  SPIClass* spi = &SPI; // Custom or default SPI bus pointer (used in transactions)
   uint8_t csPin;
   uint32_t spiFrequency;
   SPISettings spiSettings;

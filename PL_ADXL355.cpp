@@ -138,8 +138,8 @@ ADXL355::ADXL355(uint8_t csPin, uint32_t frequency) : interface(ADXL355_Interfac
 
 void ADXL355::beginSPI(uint8_t csPin, uint32_t frequency, std::shared_ptr<SPIClass> customSPI) {
   interface = ADXL355_Interface::spi;
-  this->customSPI = customSPI;
-  this->spi = customSPI ? customSPI.get() : &SPI;
+  this->customSPI = customSPI; // Custom SPI bus shared pointer (stored to guarantee custom SPI bus object lifetime)
+  this->spi = customSPI ? customSPI.get() : &SPI; // Custom or default SPI bus pointer (used in transactions)
   this->csPin = csPin;
   spiFrequency = frequency;
 
