@@ -55,6 +55,62 @@ test(getNumberOfFifoSamples) {
 
 //==============================================================================
 
+test(status) {
+  adxl355.reset();
+  delay(1000);
+  adxl355.setOutputDataRate(PL::ADXL355_OutputDataRate::odr4000);
+  adxl355.enableMeasurement();
+  delay(50);
+
+  PL::ADXL355_Status status = adxl355.getStatus();
+  assertTrue((status & PL::ADXL355_Status::dataReady) == PL::ADXL355_Status::dataReady);
+  assertTrue((status & PL::ADXL355_Status::fifoFull) == PL::ADXL355_Status::fifoFull);
+}
+
+//==============================================================================
+
+test(clearFifo) {
+  adxl355.reset();
+  delay(1000);
+  adxl355.setOutputDataRate(PL::ADXL355_OutputDataRate::odr4000);
+  adxl355.enableMeasurement();
+  delay(50);
+
+  assertEqual(PL::ADXL355::maxNumberOfFifoSamples, adxl355.getNumberOfFifoSamples());
+
+  adxl355.disableMeasurement();
+  adxl355.clearFifo();
+  assertEqual(0, adxl355.getNumberOfFifoSamples());
+}
+
+//==============================================================================
+
+test(getAccelerations) {
+  adxl355.reset();
+  delay(1000);
+  adxl355.setRange(PL::ADXL355_Range::range2g);
+  adxl355.enableMeasurement();
+  delay(50);
+
+  auto accelerations = adxl355.getAccelerations();
+  float magnitude = sqrt(accelerations.x * accelerations.x + accelerations.y * accelerations.y + accelerations.z * accelerations.z);
+  assertNear(1.0, magnitude, 0.5);
+}
+
+//==============================================================================
+
+test(temperature) {
+  adxl355.reset();
+  delay(1000);
+  adxl355.enableMeasurement();
+  delay(50);
+
+  float temperature = adxl355.getTemperature();
+  assertNear(25, temperature, 25);
+}
+
+//==============================================================================
+
 test(offsets) {
   float scaleFactor = adxl355.getAccelerationScaleFactor();
   
