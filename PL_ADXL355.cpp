@@ -1,5 +1,6 @@
 #include "PL_ADXL355.h"
 #include <math.h>
+#include <algorithm>
 
 //==============================================================================
 
@@ -43,6 +44,7 @@ const uint8_t ADXL355_REG_RANGE = 0x2C;
 const uint8_t ADXL355_REG_POWER_CTL = 0x2D;
 const uint8_t ADXL355_REG_SELF_TEST = 0x2E;
 const uint8_t ADXL355_REG_RESET = 0x2F;
+const uint8_t ADXL355_REG_SHADOW = 0x50;
 
 const uint8_t ADXL355_REG_STATUS_DATA_RDY = 0x01;
 const uint8_t ADXL355_REG_STATUS_FIFO_FULL = 0x02;
@@ -353,6 +355,11 @@ ADXL355_Accelerations ADXL355::getOffsets() {
 
 void ADXL355::setRawOffsets(ADXL355_RawAccelerations rawOffsets) {
   uint8_t data[6];
+  const int32_t minRawOffset = -(1 << 19);
+  const int32_t maxRawOffset = (1 << 19) - 1;
+  rawOffsets.x = std::max(minRawOffset, std::min(maxRawOffset, rawOffsets.x));
+  rawOffsets.y = std::max(minRawOffset, std::min(maxRawOffset, rawOffsets.y));
+  rawOffsets.z = std::max(minRawOffset, std::min(maxRawOffset, rawOffsets.z));
   rawOffsets.x *= 4096;
   rawOffsets.y *= 4096;
   rawOffsets.z *= 4096;
@@ -406,6 +413,8 @@ float ADXL355::getActivityDetectionThreshold() {
 
 void ADXL355::setRawActivityDetectionThreshold(uint32_t rawThreshold) {
   uint8_t data[2];
+  const uint32_t maxRawThreshold = (1 << 19) - 1;
+  rawThreshold = std::min(maxRawThreshold, rawThreshold);
   rawThreshold >>= 3;
   data[0] = ((uint8_t*)&rawThreshold)[1];
   data[1] = ((uint8_t*)&rawThreshold)[0];
@@ -658,7 +667,7 @@ void ADXL355::reset() {
 
 uint64_t ADXL355::getShadowRegisters() {
   uint64_t data = 0;
-  read(0x50, &data, 5);
+  read(ADXL355_REG_SHADOW, &data, 5);
   return data;
 }
 

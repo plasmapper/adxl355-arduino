@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.4.0] - 2026-08-19
 ### Changed
 - Array arguments passed as &array.
 
@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - clearFifo possible infinite loop.
 - getAccelerationScaleFactor not returning NAN for an unexpected range value.
 - selfTest not setting a specific output data rate.
+- setRawOffsets and setRawActivityDetectionThreshold not clamping the arguments.
 
 ## [1.3.0] - 2025-08-21
 ### Added
