@@ -224,6 +224,26 @@ test(power) {
 
 //==============================================================================
 
+test(selfTest) {
+  adxl355.reset();
+  delay(1000);
+  adxl355.setRange(PL::ADXL355_Range::range4g);
+  adxl355.disableMeasurement();
+
+  PL::ADXL355_Accelerations accelerations = adxl355.selfTest();
+
+  // Expected self-test output according to the datasheet: 0.1...0.6 g for X and Y, 0.5...3.0 g for Z
+  assertNear(0.35, accelerations.x, 0.25);
+  assertNear(0.35, accelerations.y, 0.25);
+  assertNear(1.75, accelerations.z, 1.25);
+
+  assertEqual((uint8_t)PL::ADXL355_Range::range4g, (uint8_t)adxl355.getRange());
+  assertFalse(adxl355.isMeasurementEnabled());
+  assertEqual(0, adxl355.getNumberOfFifoSamples());
+}
+
+//==============================================================================
+
 test(reset) {
   uint64_t shadowRegistersBeforeReset = adxl355.getShadowRegisters();
   adxl355.reset();

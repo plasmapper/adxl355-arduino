@@ -594,6 +594,7 @@ bool ADXL355::isDataReadyEnabled() {
 
 ADXL355_Accelerations ADXL355::selfTest() {
   uint8_t measurementEnabled = isMeasurementEnabled();
+  ADXL355_Range range = getRange();
   ADXL355_Accelerations accelNoForce, accelForce;
 
   setRange(ADXL355_Range::range8g);
@@ -609,7 +610,10 @@ ADXL355_Accelerations ADXL355::selfTest() {
   accelForce = getAccelerations();
   if (!measurementEnabled)
     disableMeasurement();
+  setRange(range);
+
   write(ADXL355_REG_SELF_TEST, 0);
+  clearFifo();
   return ADXL355_Accelerations(accelForce.x - accelNoForce.x, accelForce.y - accelNoForce.y, accelForce.z - accelNoForce.z);
 }
 
