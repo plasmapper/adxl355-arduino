@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FIFO reading algorithm.
 - clearFifo possible infinite loop.
 - getAccelerationScaleFactor not returning NAN for an unexpected range value.
+- selfTest not setting a specific output data rate.
 
 ## [1.3.0] - 2025-08-21
 ### Added

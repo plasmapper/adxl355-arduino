@@ -624,9 +624,11 @@ bool ADXL355::isDataReadyEnabled() {
 ADXL355_Accelerations ADXL355::selfTest() {
   uint8_t measurementEnabled = isMeasurementEnabled();
   ADXL355_Range range = getRange();
+  ADXL355_OutputDataRate outputDataRate = getOutputDataRate();
   ADXL355_Accelerations accelNoForce, accelForce;
 
   setRange(ADXL355_Range::range8g);
+  setOutputDataRate(ADXL355_OutputDataRate::odr4000);
   disableMeasurement();
   write(ADXL355_REG_SELF_TEST, ADXL355_REG_SELF_TEST_ST1);
   delay(10);
@@ -639,6 +641,7 @@ ADXL355_Accelerations ADXL355::selfTest() {
   if (!measurementEnabled)
     disableMeasurement();
   setRange(range);
+  setOutputDataRate(outputDataRate);
 
   write(ADXL355_REG_SELF_TEST, 0);
   clearFifo();
