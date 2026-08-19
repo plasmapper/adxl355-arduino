@@ -55,6 +55,32 @@ test(getNumberOfFifoSamples) {
 
 //==============================================================================
 
+test(readAccelerationsFromFifo) {
+  adxl355.reset();
+  delay(1000);
+  adxl355.setOutputDataRate(PL::ADXL355_OutputDataRate::odr4000);
+  adxl355.enableMeasurement();
+  delay(50);
+
+  auto rawAccelerations = adxl355.getRawAccelerationsFromFifo(100);
+  assertTrue(rawAccelerations.x != 0 || rawAccelerations.y != 0 || rawAccelerations.z != 0);
+  auto accelerations = adxl355.getAccelerationsFromFifo(100);
+  assertTrue(accelerations.x != 0 || accelerations.y != 0 || accelerations.z != 0);
+
+  adxl355.disableMeasurement();
+  adxl355.clearFifo();
+  rawAccelerations = adxl355.getRawAccelerationsFromFifo(100);
+  assertEqual(0, rawAccelerations.x);
+  assertEqual(0, rawAccelerations.y);
+  assertEqual(0, rawAccelerations.z);
+  accelerations = adxl355.getAccelerationsFromFifo(100);
+  assertEqual(0, accelerations.x);
+  assertEqual(0, accelerations.y);
+  assertEqual(0, accelerations.z);
+}
+
+//==============================================================================
+
 test(status) {
   adxl355.reset();
   delay(1000);

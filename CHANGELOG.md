@@ -6,13 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Tests for getStatus, clearFifo, getAccelerations and getTemperature.
+- Tests for getStatus, clearFifo, getAccelerations, getTemperature, getRawAccelerationsFromFifo and getAccelerationsFromFifo.
+- Timeout to getRawAccelerationsFromFifo and getAccelerationsFromFifo.
 
 ### Removed
 - Redundant standby-mode acceleration read in selfTest.
 
 ### Fixed
 - selfTest not restoring range and not clearing FIFO.
+- FIFO reading algorithm.
 
 ## [1.3.0] - 2025-08-21
 ### Added

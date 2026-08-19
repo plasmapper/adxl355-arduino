@@ -252,44 +252,68 @@ void ADXL355::clearFifo() {
 
 //==============================================================================
 
-ADXL355_RawAccelerations ADXL355::getRawAccelerationsFromFifo() {
-  uint8_t data[3];
+ADXL355_RawAccelerations ADXL355::getRawAccelerationsFromFifo(unsigned long timeoutMs) {
+  uint8_t data[9];
   ADXL355_RawAccelerations rawAccelerations(0, 0, 0);
+  unsigned long startTime = millis();
 
+  // The FIFO has 96 locations for samples (1 sample is an acceleration for 1 axis). One measurement contains 3 samples.
+  // According to the experiments if the buffer is not full, the sequence "1) Read sample 2) Delay 3) Read sample" gives X and Y samples.
+  // But if the buffer is already full the same sequence can give 2 X samples, probably because the new measurement is written and the read pointer
+  // is shifted.
+  // Therefore reading one sample and checking that it is X does not guarantee the following samples to be Y and Z.
+
+  // Wait for the number of samples to be >= 3
+  uint8_t numberOfFifoSamples;
   do {
-    read(ADXL355_REG_FIFO_DATA, &data, sizeof(data));
-  } while (!(data[2] & 0x03));
-  
-  if (data[2] & 0x02)
+    numberOfFifoSamples = read(ADXL355_REG_FIFO_ENTRIES);
+  } while (numberOfFifoSamples < 3 && millis() - startTime < timeoutMs);
+  if (numberOfFifoSamples < 3)
     return rawAccelerations;
-    
+
+  // Read 3 samples
+  read(ADXL355_REG_FIFO_DATA, data, 9);
+
+  // If the first sample is not X (according to the least significant bits) try to shift samples and read 1 or 2 more samples
+  for (int additionalSample = 0; additionalSample < 2 && (data[2] & 0x03) != 0x01; additionalSample++) {
+    for (int i = 0; i < 3; i++) {
+      data[i] = data[i + 3];
+      data[i + 3] = data[i + 6];
+    }
+
+    do {
+      numberOfFifoSamples = read(ADXL355_REG_FIFO_ENTRIES);
+    } while (numberOfFifoSamples < 1 && millis() - startTime < timeoutMs);
+    if (numberOfFifoSamples < 1)
+      return rawAccelerations;
+
+    read(ADXL355_REG_FIFO_DATA, data + 6, 3);
+  }
+
+  if (!((data[2] & 0x03) == 0x01 && (data[5] & 0x03) == 0x00 && (data[8] & 0x03) == 0x00))
+    return rawAccelerations;
+
   ((uint8_t*)&rawAccelerations.x)[1] = data[2];
   ((uint8_t*)&rawAccelerations.x)[2] = data[1];
   ((uint8_t*)&rawAccelerations.x)[3] = data[0];
+  ((uint8_t*)&rawAccelerations.y)[1] = data[5];
+  ((uint8_t*)&rawAccelerations.y)[2] = data[4];
+  ((uint8_t*)&rawAccelerations.y)[3] = data[3];
+  ((uint8_t*)&rawAccelerations.z)[1] = data[8];
+  ((uint8_t*)&rawAccelerations.z)[2] = data[7];
+  ((uint8_t*)&rawAccelerations.z)[3] = data[6];
 
-  while(read(ADXL355_REG_FIFO_ENTRIES) < 2);
-  
-  read(ADXL355_REG_FIFO_DATA, &data, sizeof(data));
-  ((uint8_t*)&rawAccelerations.y)[1] = data[2];
-  ((uint8_t*)&rawAccelerations.y)[2] = data[1];
-  ((uint8_t*)&rawAccelerations.y)[3] = data[0];
-  
-  read(ADXL355_REG_FIFO_DATA, &data, sizeof(data));
-  ((uint8_t*)&rawAccelerations.z)[1] = data[2];
-  ((uint8_t*)&rawAccelerations.z)[2] = data[1];
-  ((uint8_t*)&rawAccelerations.z)[3] = data[0];
-  
   rawAccelerations.x /= 4096;
   rawAccelerations.y /= 4096;
   rawAccelerations.z /= 4096;
-  
+
   return rawAccelerations;
 }
 
 //==============================================================================
 
-ADXL355_Accelerations ADXL355::getAccelerationsFromFifo() {
-  ADXL355_RawAccelerations rawAccelerations = getRawAccelerationsFromFifo();
+ADXL355_Accelerations ADXL355::getAccelerationsFromFifo(unsigned long timeoutMs) {
+  ADXL355_RawAccelerations rawAccelerations = getRawAccelerationsFromFifo(timeoutMs);
   float scaleFactor = getAccelerationScaleFactor();
   return ADXL355_Accelerations(rawAccelerations.x * scaleFactor, rawAccelerations.y * scaleFactor, rawAccelerations.z * scaleFactor);
 }

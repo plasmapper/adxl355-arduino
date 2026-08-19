@@ -298,12 +298,14 @@ public:
   void clearFifo();
 
   /// @brief Gets the raw X-, Y- and Z-axis accelerations from the FIFO
-  /// @return raw accelerations
-  ADXL355_RawAccelerations getRawAccelerationsFromFifo();
-  
+  /// @param timeoutMs timeout, ms
+  /// @return raw accelerations (all zero if the timeout expires or the FIFO data is invalid)
+  ADXL355_RawAccelerations getRawAccelerationsFromFifo(unsigned long timeoutMs = (unsigned long)-1);
+
   /// @brief Gets the X-, Y- and Z-axis accelerations from the FIFO
-  /// @return accelerations, g
-  ADXL355_Accelerations getAccelerationsFromFifo();
+  /// @param timeoutMs timeout, ms
+  /// @return accelerations, g (all zero if the timeout expires or the FIFO data is invalid)
+  ADXL355_Accelerations getAccelerationsFromFifo(unsigned long timeoutMs = (unsigned long)-1);
 
   /// @brief Gets the raw X-, Y- and Z-axis acceleration offsets
   /// @return raw acceleration offsets
