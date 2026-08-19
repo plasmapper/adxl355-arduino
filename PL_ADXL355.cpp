@@ -245,9 +245,13 @@ ADXL355_Accelerations ADXL355::getAccelerations() {
 //==============================================================================
 
 void ADXL355::clearFifo() {
-  uint8_t data[3];
-  while(read(ADXL355_REG_FIFO_ENTRIES))
-    read(ADXL355_REG_FIFO_DATA, &data, sizeof(data));    
+  uint8_t numberOfFifoSamples = read(ADXL355_REG_FIFO_ENTRIES);
+  if (numberOfFifoSamples > maxNumberOfFifoSamples)
+    numberOfFifoSamples = maxNumberOfFifoSamples;
+  if (numberOfFifoSamples) {
+    uint8_t data[maxNumberOfFifoSamples * 3];
+    read(ADXL355_REG_FIFO_DATA, data, numberOfFifoSamples * 3);
+  }
 }
 
 //==============================================================================

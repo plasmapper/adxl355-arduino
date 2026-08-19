@@ -294,7 +294,7 @@ public:
   /// @return accelerations, g
   ADXL355_Accelerations getAccelerations();
 
-  /// @brief Discards the valid 3-axis samples in the FIFO
+  /// @brief Discards the valid samples in the FIFO
   void clearFifo();
 
   /// @brief Gets the raw X-, Y- and Z-axis accelerations from the FIFO
