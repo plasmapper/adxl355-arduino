@@ -599,7 +599,6 @@ ADXL355_Accelerations ADXL355::selfTest() {
 
   setRange(ADXL355_Range::range8g);
   disableMeasurement();
-  getAccelerations();
   write(ADXL355_REG_SELF_TEST, ADXL355_REG_SELF_TEST_ST1);
   delay(10);
   enableMeasurement();
