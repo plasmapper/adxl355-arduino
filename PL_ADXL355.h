@@ -410,7 +410,7 @@ public:
   ADXL355_Range getRange();
   
   /// @brief Gets the acceleration scale factor
-  /// @return acceleration scale factor, g/LSB
+  /// @return acceleration scale factor, g/LSB (NAN if the range is invalid)
   float getAccelerationScaleFactor();
 
   /// @brief Sets the acceleration range

@@ -1,4 +1,5 @@
 #include "PL_ADXL355.h"
+#include <math.h>
 
 //==============================================================================
 
@@ -532,10 +533,10 @@ float ADXL355::getAccelerationScaleFactor() {
     case ADXL355_Range::range4g:
       return accelerationScaleFactorRange4G;
     case ADXL355_Range::range8g:
-      return accelerationScaleFactorRange8G;      
+      return accelerationScaleFactorRange8G;
   }
 
-  return 1;
+  return NAN;
 }
 
 //==============================================================================

@@ -252,7 +252,7 @@ test(synchronizationAndExternalClock) {
 //==============================================================================
 
 test(rangeIntPolarityAndI2CSpeed) {
-  for (uint8_t range = 0; range <= (uint8_t)PL::ADXL355_Range::range8g; range++) {
+  for (uint8_t range = (uint8_t)PL::ADXL355_Range::range2g; range <= (uint8_t)PL::ADXL355_Range::range8g; range++) {
     for (uint8_t intPol = 0; intPol <= (uint8_t)PL::ADXL355_InterruptPolarity::activeHigh; intPol++) {
       for (uint8_t i2CSpeed = 0; i2CSpeed <= (uint8_t)PL::ADXL355_I2CSpeed::highSpeed; i2CSpeed++) {
         adxl355.setRange((PL::ADXL355_Range)range);
