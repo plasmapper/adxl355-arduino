@@ -171,7 +171,7 @@ void ADXL355::begin() {
 
 ADXL355_DeviceInfo ADXL355::getDeviceInfo() {
   uint8_t data[4];
-  read(ADXL355_REG_DEVID_AD, &data, sizeof(data));
+  read(ADXL355_REG_DEVID_AD, data, sizeof(data));
   ADXL355_DeviceInfo deviceInfo;
   deviceInfo.vendorId = data[0];
   deviceInfo.familyId = data[1];
@@ -196,7 +196,7 @@ uint8_t ADXL355::getNumberOfFifoSamples() {
 
 uint16_t ADXL355::getRawTemperature() {
   uint8_t data[2];
-  read(ADXL355_REG_TEMP2, &data, sizeof(data));
+  read(ADXL355_REG_TEMP2, data, sizeof(data));
   uint16_t rawTemperature = 0;
   ((uint8_t*)&rawTemperature)[0] = data[1];
   ((uint8_t*)&rawTemperature)[1] = data[0];
@@ -214,7 +214,7 @@ float ADXL355::getTemperature() {
 ADXL355_RawAccelerations ADXL355::getRawAccelerations() {
   uint8_t data[9];
   ADXL355_RawAccelerations rawAccelerations(0, 0, 0);
-  read(ADXL355_REG_XDATA3, &data, sizeof(data));
+  read(ADXL355_REG_XDATA3, data, sizeof(data));
   
   ((uint8_t*)&rawAccelerations.x)[1] = data[2];
   ((uint8_t*)&rawAccelerations.x)[2] = data[1];
@@ -328,7 +328,7 @@ ADXL355_Accelerations ADXL355::getAccelerationsFromFifo(unsigned long timeoutMs)
 ADXL355_RawAccelerations ADXL355::getRawOffsets() {
   uint8_t data[6];
   ADXL355_RawAccelerations rawOffsets(0, 0, 0);
-  read(ADXL355_REG_OFFSET_X_H, &data, sizeof(data));
+  read(ADXL355_REG_OFFSET_X_H, data, sizeof(data));
   ((uint8_t*)&rawOffsets.x)[2] = data[1];
   ((uint8_t*)&rawOffsets.x)[3] = data[0];
   ((uint8_t*)&rawOffsets.y)[2] = data[3];
@@ -362,7 +362,7 @@ void ADXL355::setRawOffsets(ADXL355_RawAccelerations rawOffsets) {
   data[3] = ((uint8_t*)&rawOffsets.y)[2];
   data[4] = ((uint8_t*)&rawOffsets.z)[3];
   data[5] = ((uint8_t*)&rawOffsets.z)[2];
-  write(ADXL355_REG_OFFSET_X_H, &data, sizeof(data));
+  write(ADXL355_REG_OFFSET_X_H, data, sizeof(data));
 }
 
 //==============================================================================
@@ -389,7 +389,7 @@ void ADXL355::setActivityDetectionAxes(ADXL355_Axes axes) {
 uint32_t ADXL355::getRawActivityDetectionThreshold() {
   uint8_t data[2];
   uint32_t rawThreshold = 0;
-  read(ADXL355_REG_ACT_THRESH_H, &data, sizeof(data));
+  read(ADXL355_REG_ACT_THRESH_H, data, sizeof(data));
   ((uint8_t*)&rawThreshold)[0] = data[1];
   ((uint8_t*)&rawThreshold)[1] = data[0];
   rawThreshold <<= 3;
@@ -409,7 +409,7 @@ void ADXL355::setRawActivityDetectionThreshold(uint32_t rawThreshold) {
   rawThreshold >>= 3;
   data[0] = ((uint8_t*)&rawThreshold)[1];
   data[1] = ((uint8_t*)&rawThreshold)[0];
-  write(ADXL355_REG_ACT_THRESH_H, &data, sizeof(data));
+  write(ADXL355_REG_ACT_THRESH_H, data, sizeof(data));
 }
 
 //==============================================================================
