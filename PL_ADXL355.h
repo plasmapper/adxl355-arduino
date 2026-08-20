@@ -158,9 +158,9 @@ enum class ADXL355_Range : uint8_t {
 
 /// @brief Interrupt polarity
 enum class ADXL355_InterruptPolarity : uint8_t {
-  /// @brief fast
+  /// @brief Active low
   activeLow = 0x00,
-  /// @brief high-speed
+  /// @brief Active high
   activeHigh = 0x01
 };
 
