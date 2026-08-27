@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - setRawActivityDetectionThreshold maximum value in the documentation.
 - selfTest setting range and output data rate while measurement was enabled.
 - enableExternalClock, disableExternalClock and isExternalClockEnabled inverting the EXT_CLK bit.
+- getRawAccelerationsFromFifo including the X-axis marker bits in the raw value, biasing negative samples by 1 LSB.
 
 ## [1.4.1] - 2026-08-20
 ### Fixed
