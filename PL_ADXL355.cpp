@@ -508,19 +508,19 @@ void ADXL355::setSynchronization(ADXL355_Synchronization synchronization) {
 //==============================================================================
 
 void ADXL355::enableExternalClock() {
-  write(ADXL355_REG_SYNC, read(ADXL355_REG_SYNC) & ~ADXL355_REG_SYNC_EXT_CLK);
-}
-
-//==============================================================================
-
-void ADXL355::disableExternalClock() {
   write(ADXL355_REG_SYNC, read(ADXL355_REG_SYNC) | ADXL355_REG_SYNC_EXT_CLK);
 }
 
 //==============================================================================
 
+void ADXL355::disableExternalClock() {
+  write(ADXL355_REG_SYNC, read(ADXL355_REG_SYNC) & ~ADXL355_REG_SYNC_EXT_CLK);
+}
+
+//==============================================================================
+
 bool ADXL355::isExternalClockEnabled() {
-  return !(read(ADXL355_REG_SYNC) & ADXL355_REG_SYNC_EXT_CLK);
+  return read(ADXL355_REG_SYNC) & ADXL355_REG_SYNC_EXT_CLK;
 }
   
 //==============================================================================

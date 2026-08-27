@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - clearFifo reading up to 288 bytes in a single SPI transaction.
 - setRawActivityDetectionThreshold maximum value in the documentation.
 - selfTest setting range and output data rate while measurement was enabled.
+- enableExternalClock, disableExternalClock and isExternalClockEnabled inverting the EXT_CLK bit.
 
 ## [1.4.1] - 2026-08-20
 ### Fixed
