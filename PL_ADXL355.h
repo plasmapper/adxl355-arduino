@@ -298,11 +298,14 @@ public:
   void clearFifo();
 
   /// @brief Gets the raw X-, Y- and Z-axis accelerations from the FIFO
+  /// @note Polls FIFO_ENTRIES with no delay between polls; at low output data rates this can busy-wait
+  /// near 100% CPU for the full sample period until timeout.
   /// @param timeoutMs timeout, ms
   /// @return raw accelerations (all zero if the timeout expires or the FIFO data is invalid)
   ADXL355_RawAccelerations getRawAccelerationsFromFifo(unsigned long timeoutMs = (unsigned long)-1);
 
   /// @brief Gets the X-, Y- and Z-axis accelerations from the FIFO
+  /// @note See getRawAccelerationsFromFifo for the polling behavior.
   /// @param timeoutMs timeout, ms
   /// @return accelerations, g (all zero if the timeout expires or the FIFO data is invalid)
   ADXL355_Accelerations getAccelerationsFromFifo(unsigned long timeoutMs = (unsigned long)-1);
