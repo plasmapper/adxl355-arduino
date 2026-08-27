@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Documentation that configuration setters other than setHpfFrequency and setInterrupts should not be called while measurement is enabled.
+- static_assert verifying the host is little-endian.
 
 ### Fixed
 - clearFifo reading up to 288 bytes in a single SPI transaction.

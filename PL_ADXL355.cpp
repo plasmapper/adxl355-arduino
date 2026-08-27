@@ -5,7 +5,13 @@
 //==============================================================================
 
 namespace PL {
-  
+
+//==============================================================================
+
+// Raw register values are assembled/disassembled without accounting for host byte order,
+// relying on the target being little-endian.
+static_assert(__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__, "raw value byte assembly assumes a little-endian host");
+
 //==============================================================================
 
 const uint8_t ADXL355_REG_DEVID_AD = 0x00;
