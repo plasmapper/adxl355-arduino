@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Documentation that configuration setters other than setHpfFrequency and setInterrupts should not be called while measurement is enabled.
+
 ### Fixed
 - clearFifo reading up to 288 bytes in a single SPI transaction.
+- setRawActivityDetectionThreshold maximum value in the documentation.
 
 ## [1.4.1] - 2026-08-20
 ### Fixed

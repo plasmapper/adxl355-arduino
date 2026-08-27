@@ -316,19 +316,22 @@ public:
   ADXL355_Accelerations getOffsets();
 
   /// @brief Sets the raw X-, Y- and Z-axis acceleration offsets
-  /// @param rawOffsets raw acceleration offsets
+  /// @note Should not be called while measurement is enabled
+  /// @param rawOffsets raw acceleration offsets (min: -524288, max: 524287)
   void setRawOffsets(ADXL355_RawAccelerations rawOffsets);
 
   /// @brief Sets the X-, Y- and Z-axis acceleration offsets
+  /// @note Should not be called while measurement is enabled
   /// @param offsets acceleration offsets, g
   void setOffsets(ADXL355_Accelerations offsets);
 
   /// @brief Gets the axes for which activity detection is enabled
-  /// @return axes for which activity detection is enabled 
+  /// @return axes for which activity detection is enabled
   ADXL355_Axes getActivityDetectionAxes();
 
   /// @brief Enables and disables activity detection
-  /// @param axes axes for which activity detection should be enabled 
+  /// @note Should not be called while measurement is enabled
+  /// @param axes axes for which activity detection should be enabled
   void setActivityDetectionAxes(ADXL355_Axes axes);
 
   /// @brief Gets the raw activity detection threshold
@@ -340,10 +343,12 @@ public:
   float getActivityDetectionThreshold();
 
   /// @brief Sets the raw activity detection threshold
-  /// @param rawThreshold raw activity detection threshold (max: 524288)
+  /// @note Should not be called while measurement is enabled
+  /// @param rawThreshold raw activity detection threshold (max: 524287)
   void setRawActivityDetectionThreshold(uint32_t rawThreshold);
 
   /// @brief Sets the activity detection threshold
+  /// @note Should not be called while measurement is enabled
   /// @param threshold activity detection threshold, g
   void setActivityDetectionThreshold(float threshold);
 
@@ -352,6 +357,7 @@ public:
   uint8_t getActivityDetectionCount();
 
   /// @brief Sets the number of consecutive events above threshold required to detect activity
+  /// @note Should not be called while measurement is enabled
   /// @param count activity count
   void setActivityDetectionCount(uint8_t count);
 
@@ -368,6 +374,7 @@ public:
   ADXL355_OutputDataRate getOutputDataRate();
 
   /// @brief Sets the output data rate
+  /// @note Should not be called while measurement is enabled
   /// @param outputDataRate output data rate
   void setOutputDataRate(ADXL355_OutputDataRate outputDataRate);
 
@@ -376,6 +383,7 @@ public:
   uint8_t getFifoWatermark();
 
   /// @brief Sets the watermark number of samples stored in the FIFO that triggers a FIFO_FULL condition
+  /// @note Should not be called while measurement is enabled
   /// @param watermark output data rate
   void setFifoWatermark(uint8_t watermark);
 
@@ -392,13 +400,16 @@ public:
   ADXL355_Synchronization getSynchronization();
  
   /// @brief Sets the synchronization mode
+  /// @note Should not be called while measurement is enabled
   /// @param synchronization synchronization mode
   void setSynchronization(ADXL355_Synchronization synchronization);
 
   /// @brief Enables the external clock
+  /// @note Should not be called while measurement is enabled
   void enableExternalClock();
 
   /// @brief Disables the external clock
+  /// @note Should not be called while measurement is enabled
   void disableExternalClock();
 
   /// @brief Checksif the external clock is enabled
@@ -414,22 +425,25 @@ public:
   float getAccelerationScaleFactor();
 
   /// @brief Sets the acceleration range
+  /// @note Should not be called while measurement is enabled
   /// @param range acceleration range
   void setRange(ADXL355_Range range);
 
   /// @brief Gets the interrupt polarity
   /// @return interrupt polarity
   ADXL355_InterruptPolarity getInterruptPolarity();
- 
+
   /// @brief Sets the interrupt polarity
+  /// @note Should not be called while measurement is enabled
   /// @param polarity interrupt polarity
   void setInterruptPolarity(ADXL355_InterruptPolarity polarity);
 
   /// @brief Gets the I2C speed
   /// @return I2C speed
   ADXL355_I2CSpeed getI2CSpeed();
- 
+
   /// @brief Sets the I2C speed
+  /// @note Should not be called while measurement is enabled
   /// @param speed I2C speed
   void setI2CSpeed(ADXL355_I2CSpeed speed);
 
