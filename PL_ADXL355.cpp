@@ -251,9 +251,12 @@ void ADXL355::clearFifo() {
   uint8_t numberOfFifoSamples = read(ADXL355_REG_FIFO_ENTRIES);
   if (numberOfFifoSamples > maxNumberOfFifoSamples)
     numberOfFifoSamples = maxNumberOfFifoSamples;
-  if (numberOfFifoSamples) {
-    uint8_t data[maxNumberOfFifoSamples * 3];
-    read(ADXL355_REG_FIFO_DATA, data, numberOfFifoSamples * 3);
+  const uint8_t maxNumberOfSamplesToRead = 3;
+  uint8_t data[maxNumberOfSamplesToRead * 3];
+  while (numberOfFifoSamples) {
+    uint8_t numberOfSamplesToRead = std::min(numberOfFifoSamples, maxNumberOfSamplesToRead);
+    read(ADXL355_REG_FIFO_DATA, data, numberOfSamplesToRead * 3);
+    numberOfFifoSamples -= numberOfSamplesToRead;
   }
 }
 
