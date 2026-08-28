@@ -415,7 +415,7 @@ public:
   /// @note Should not be called while measurement is enabled
   void disableExternalClock();
 
-  /// @brief Checksif the external clock is enabled
+  /// @brief Checks if the external clock is enabled
   /// @return true if the external clock is enabled
   bool isExternalClockEnabled();
 
